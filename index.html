@@ -13,21 +13,22 @@
     <div id="grid">
         <div class="container">
             <h2>Cards in Hand</h2>
-            <div id="hand"></div>
+            <div id="hand" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
         </div>
         <div class="container">
             <h2>Cards in Play</h2>
-            <div id="inPlay"></div>
+            <div id="inPlay" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
         </div>
         <div class="container">
             <h2>Graveyard</h2>
-            <div id="graveyard"></div>
+            <div id="graveyard" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
         </div>
         <div class="container">
             <h2>Exile</h2>
-            <div id="exile"></div>
+            <div id="exile" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
         </div>
     </div>
+    
 
     <div class="container">
         <div id="mana-tracking">
