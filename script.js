@@ -25,12 +25,100 @@ const generalDeckList = [
 // Initial mana pool values
 let manaPool = { blue: 0, black: 0, red: 0, colorless: 0 };
 
-// Function to adjust mana
+// Allow elements to be dropped in the zone
+function allowDrop(event) {
+    event.preventDefault();
+}
+
+// When a card is dragged, store the card's ID
+function drag(event) {
+    event.dataTransfer.setData("text", event.target.id);
+}
+
+// Handle the drop event
+function drop(event) {
+    event.preventDefault();
+    const cardId = event.dataTransfer.getData("text");
+    const card = document.getElementById(cardId);
+    event.target.appendChild(card);
+}
+
+// Function to update the displayed mana values
+function updateManaDisplay() {
+    document.getElementById("blueMana").innerText = manaPool.blue;
+    document.getElementById("blackMana").innerText = manaPool.black;
+    document.getElementById("redMana").innerText = manaPool.red;
+    document.getElementById("colorlessMana").innerText = manaPool.colorless;
+}
+
+// Function to adjust mana (increase or decrease)
 function adjustMana(color, amount) {
     manaPool[color] += amount;
-    if (manaPool[color] < 0) manaPool[color] = 0;
-    document.getElementById(color + "Mana").innerText = manaPool[color];
+
+    // Prevent mana from going below 0
+    if (manaPool[color] < 0) {
+        manaPool[color] = 0;
+    }
+
+    // Update the displayed mana after adjustment
+    updateManaDisplay();
 }
+
+// Adding event listeners for mana adjustment buttons
+document.getElementById("blueManaPlus").addEventListener("click", function() {
+    adjustMana('blue', 1);
+});
+document.getElementById("blueManaMinus").addEventListener("click", function() {
+    adjustMana('blue', -1);
+});
+
+document.getElementById("blackManaPlus").addEventListener("click", function() {
+    adjustMana('black', 1);
+});
+document.getElementById("blackManaMinus").addEventListener("click", function() {
+    adjustMana('black', -1);
+});
+
+document.getElementById("redManaPlus").addEventListener("click", function() {
+    adjustMana('red', 1);
+});
+document.getElementById("redManaMinus").addEventListener("click", function() {
+    adjustMana('red', -1);
+});
+
+document.getElementById("colorlessManaPlus").addEventListener("click", function() {
+    adjustMana('colorless', 1);
+});
+document.getElementById("colorlessManaMinus").addEventListener("click", function() {
+    adjustMana('colorless', -1);
+});
+
+// Function to display cards and enable dragging
+async function displayCards(section, cards) {
+    const container = document.getElementById(section);
+    container.innerHTML = ''; // Clear previous cards
+
+    for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        const cardData = await fetchCardData(card);
+
+        if (cardData && cardData.image_uris && cardData.image_uris.normal) {
+            const img = document.createElement('img');
+            img.src = cardData.image_uris.normal;
+            img.alt = cardData.name;
+            img.id = section + "_card_" + i; // Create unique ID for each card
+            img.draggable = true; // Make the card draggable
+            img.ondragstart = drag; // Set the drag start event handler
+            img.style.width = '100px';
+            container.appendChild(img);
+        } else {
+            console.error(`Card data for "${card}" not found.`);
+        }
+    }
+}
+
+// Initialize the mana display at start
+updateManaDisplay();
 
 // Function to generate random mana
 function generateRandomMana() {
@@ -185,3 +273,67 @@ document.getElementById('generate').addEventListener('click', async function() {
     generateRandomMana();
     generateYesNoFields();
 });
+
+// Allow elements to be dropped in the zone
+function allowDrop(event) {
+    event.preventDefault();
+}
+
+// When a card is dragged, store the card's ID
+function drag(event) {
+    event.dataTransfer.setData("text", event.target.id);
+}
+
+// Handle the drop event
+function drop(event) {
+    event.preventDefault();
+    const cardId = event.dataTransfer.getData("text");
+    const card = document.getElementById(cardId);
+    event.target.appendChild(card);
+}
+
+// Function to toggle card rotation on double-click
+function rotateCard(event) {
+    const card = event.target;
+    const isRotated = card.getAttribute('data-rotated') === 'true';
+
+    if (isRotated) {
+        card.style.transform = 'rotate(0deg)'; // Reset rotation to 0
+        card.setAttribute('data-rotated', 'false'); // Update attribute
+    } else {
+        card.style.transform = 'rotate(90deg)'; // Rotate 90 degrees
+        card.setAttribute('data-rotated', 'true'); // Update attribute
+    }
+}
+
+// Function to display cards and enable dragging, rotating on double-click
+async function displayCards(section, cards) {
+    const container = document.getElementById(section);
+    container.innerHTML = ''; // Clear previous cards
+
+    for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        const cardData = await fetchCardData(card);
+
+        if (cardData && cardData.image_uris && cardData.image_uris.normal) {
+            const img = document.createElement('img');
+            img.src = cardData.image_uris.normal;
+            img.alt = cardData.name;
+            img.id = section + "_card_" + i; // Create unique ID for each card
+            img.draggable = true; // Make the card draggable
+            img.ondragstart = drag; // Set the drag start event handler
+            img.style.width = '100px';
+            img.style.transition = 'transform 0.3s'; // Smooth transition for rotation
+
+            // Set double-click event listener to rotate the card
+            img.ondblclick = rotateCard;
+
+            // Initialize with no rotation
+            img.setAttribute('data-rotated', 'false');
+
+            container.appendChild(img);
+        } else {
+            console.error(`Card data for "${card}" not found.`);
+        }
+    }
+}
