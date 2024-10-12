@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeska's Win</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Jeska's Win</h1>
+    <button id="generate">Cast Jeska's Will</button>
+
+    <div id="grid">
+        <div class="container">
+            <h2>Cards in Hand</h2>
+            <div id="hand"></div>
+        </div>
+        <div class="container">
+            <h2>Cards in Play</h2>
+            <div id="inPlay"></div>
+        </div>
+        <div class="container">
+            <h2>Graveyard</h2>
+            <div id="graveyard"></div>
+        </div>
+        <div class="container">
+            <h2>Exile</h2>
+            <div id="exile"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="mana-tracking">
+            <h2>Mana Tracking</h2>
+            <div id="manaPool" class="mana-row">
+                <div class="mana-item">
+                    <p>Blue Mana: <span id="blueMana">0</span> 
+                        <button id="blueManaPlus" class="mana-adjust">+1</button>
+                        <button id="blueManaMinus" class="mana-adjust">-1</button>
+                    </p>
+                </div>
+                <div class="mana-item">
+                    <p>Black Mana: <span id="blackMana">0</span> 
+                        <button id="blackManaPlus" class="mana-adjust">+1</button>
+                        <button id="blackManaMinus" class="mana-adjust">-1</button>
+                    </p>
+                </div>
+                <div class="mana-item">
+                    <p>Red Mana: <span id="redMana">0</span> 
+                        <button id="redManaPlus" class="mana-adjust">+1</button>
+                        <button id="redManaMinus" class="mana-adjust">-1</button>
+                    </p>
+                </div>
+                <div class="mana-item">
+                    <p>Colorless Mana: <span id="colorlessMana">0</span> 
+                        <button id="colorlessManaPlus" class="mana-adjust">+1</button>
+                        <button id="colorlessManaMinus" class="mana-adjust">-1</button>
+                    </p>
+                </div>
+            </div>
+        </div>        
+    </div>
+
+    <div class="container">
+        <div id="yesNoFields">
+            <p>Have you already played a land for turn? <span id="playedLand"></span></p>
+            <p>Do your creatures have summoning sickness? <span id="summoningSickness"></span></p>
+            <p>Do you have Metalcraft? <span id="metalcraft"></span></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
